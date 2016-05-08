@@ -38,12 +38,10 @@ function paginatedAPICall(path: string, accessToken: string, data = {}, pageLimi
     data: data,
   }).then((data, textStatus, jqXHR) => {
     var items = data["items"] || [];
-    if (items) {
-      var done = !data["next"] || pageLimit == 1 || !items;
-      callback(items, done);
-      if (!done) {
-        paginatedAPICall(data["next"], accessToken, {}, pageLimit - 1, callback);
-      }
+    var done = !data["next"] || pageLimit == 1 || !items;
+    callback(items, done);
+    if (!done) {
+      paginatedAPICall(data["next"], accessToken, {}, pageLimit - 1, callback);
     }
   });
 }

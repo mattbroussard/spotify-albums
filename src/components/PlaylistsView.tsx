@@ -26,7 +26,11 @@ class _PlaylistsView extends React.Component<any, any> {
       ret.push(
         <ul>
           {_.map(this.props.items, (playlist: Playlist) => {
-            return <li onClick={this.props.onSelectPlaylist.bind(playlist.id)}>{playlist.name}</li>;
+            return (
+              <li onClick={this.props.onSelectPlaylist.bind(null, playlist.id)}>
+                {playlist.name}
+              </li>
+            );
           })}
         </ul>
       );
