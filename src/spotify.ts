@@ -1,6 +1,9 @@
 
 import * as $ from "jquery";
 
+import {Playlist} from "./store";
+
+const DEFAULT_PAGE_LIMIT = 20;
 const REDIRECT_URI = "http://localhost:8000/oauth_callback.html";
 const CLIENT_ID = "3a0d380877cd4590ab63a7c2c1cd1faa";
 const SCOPES = [
@@ -22,9 +25,37 @@ export function doLogin() {
     'status=no,width=450,height=730');
 }
 
+function paginatedAPICall(path: string, accessToken: string, data = {}, pageLimit: number = -1,
+    callback: (items: any[], done: boolean) => void) {
+  var prefix = path.indexOf("https://api.spotify.com") == 0 ? "" : "https://api.spotify.com";
+
+  $.ajax({
+    url: prefix + path,
+    headers: {
+      "Authorization": "Bearer " + accessToken,
+    },
+    data: data,
+  }).then((data, textStatus, jqXHR) => {
+    var items = data["items"] || [];
+    if (items) {
+      var done = !data["next"] || pageLimit == 1 || !items;
+      callback(items, done);
+      if (!done) {
+        paginatedAPICall(data["next"], accessToken, {}, pageLimit - 1, callback);
+      }
+    }
+  });
+}
+
 export function getPlaylists(accessToken,
-    callback: (playlists: any[], done?: boolean) => void) {
-  // TODO: implement Spotify API call
-  callback([{"name": "test 1", "id": "X"}], false);
-  callback([{"name": "test 2", "id": "Y"}], true);
+    callback: (playlists: Playlist[], done?: boolean) => void) {
+  paginatedAPICall("/v1/me/playlists", accessToken,
+      {
+        limit: 50,
+        // fields: "",
+      },
+      DEFAULT_PAGE_LIMIT,
+      (playlists, done) => {
+        callback(<Playlist[]> playlists, done);
+      });
 }
