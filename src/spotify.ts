@@ -21,3 +21,10 @@ export function doLogin() {
     'menubar=no,location=no,resizable=no,scrollbars=no,' +
     'status=no,width=450,height=730');
 }
+
+export function getPlaylists(accessToken,
+    callback: (playlists: any[], done?: boolean) => void) {
+  // TODO: implement Spotify API call
+  callback([{"name": "test 1", "id": "X"}], false);
+  callback([{"name": "test 2", "id": "Y"}], true);
+}

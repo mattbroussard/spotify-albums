@@ -1,5 +1,5 @@
 
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import {rootReducer} from './reducers';
 
@@ -60,5 +60,15 @@ export interface RootState {
 }
 
 export function configureStore(initialState?) {
-  return createStore(rootReducer, initialState, applyMiddleware(thunkMiddleware));
+  return createStore(
+    rootReducer,
+    initialState,
+    compose(
+      applyMiddleware(thunkMiddleware),
+
+      // Publish store to devtools extension
+      // See: https://github.com/zalmoxisus/redux-devtools-extension
+      window["devToolsExtension"] ? window["devToolsExtension"]() : f => f
+    )
+  );
 }
