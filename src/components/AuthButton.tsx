@@ -9,7 +9,11 @@ class _AuthButton extends React.Component<any, any> {
   componentWillMount(): void {
     $(window).on("message.AuthButton", (event) => {
       var msg = (event.originalEvent as any).data;
-      msg = JSON.parse(msg);
+      // Looks like Redux DevTools extension uses postMessage...
+      if (!("is_oauth_callback" in msg)) {
+        return;
+      }
+
       if ("access_token" in msg) {
         this.props.dispatch({
           type: ActionType.AuthSuccess,

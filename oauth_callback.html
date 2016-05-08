@@ -11,11 +11,12 @@
     }
   });
   if (hash.access_token) {
-    window.opener.postMessage(JSON.stringify({
+    window.opener.postMessage({
+      is_oauth_callback: true,
       type: 'access_token',
       access_token: hash.access_token,
       expires_in: hash.expires_in || 0
-    }), window.location.origin);
+    }, window.location.origin);
     window.close();
   }
 })();
