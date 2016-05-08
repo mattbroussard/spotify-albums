@@ -1,0 +1,20 @@
+{
+  "name": "spotify-albums-in-playlist-view",
+  "version": "1.0.0",
+  "description": "Spotify Albums-in-Playlist View: Making it possible to organize albums in Spotify.",
+  "main": "lib/bundle.js",
+  "author": "Matt Broussard",
+  "dependencies": {
+    "jQuery": "^1.7.4",
+    "jquery": "^2.2.3",
+    "react": "^15.0.2",
+    "react-dom": "^15.0.2",
+    "react-redux": "^4.4.5",
+    "redux": "^3.5.2",
+    "redux-thunk": "^2.0.1"
+  },
+  "devDependencies": {
+    "source-map-loader": "^0.1.5",
+    "ts-loader": "^0.8.2"
+  }
+}
