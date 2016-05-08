@@ -1,10 +1,10 @@
 
-enum ActionType {
-  FinishAuth;
-  RequestPlaylists;
-  ReceivePlaylists;
-  InvalidatePlaylists;
-  RequestTracks;
-  ReceiveTracks;
-  InvalidateTracks;
+export enum ActionType {
+  AuthSuccess,
+  RequestPlaylists,
+  ReceivePlaylists,
+  InvalidatePlaylists,
+  RequestTracks,
+  ReceiveTracks,
+  InvalidateTracks,
 }

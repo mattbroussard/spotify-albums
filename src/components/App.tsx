@@ -1,41 +1,20 @@
 import * as React from "react";
+import {connect} from "react-redux";
 
-import {spotifyDataStore} from "../spotify";
 import {AuthButton} from "./AuthButton";
 
-export class App extends React.Component<any, any> {
-  private observerId: number = null;
-
-  constructor(props: any) {
-    super(props);
-    this.state = {
-      authed: spotifyDataStore.isAuthenticated(),
-    };
-  }
-
-  componentWillMount() {
-    this.observerId = spotifyDataStore.addObserver(() => {
-      this.setState({
-        authed: spotifyDataStore.isAuthenticated(),
-      });
-      if (this.state.authed) {
-        spotifyDataStore.get("/v1/me/playlists", {limit: 50}, (data) => {
-          alert("got " + data.length + " playlists!");
-          console.log(data);
-        });
-      }
-    });
-  }
-
-  componentWillUnmount() {
-    spotifyDataStore.removeObserver(this.observerId);
-  }
-
+class _App extends React.Component<any, any> {
   render() {
-    if (this.state.authed) {
+    if (this.props.authed) {
       return <h1>Successfully authenticated!</h1>;
     } else {
       return <AuthButton />;
     }
   }
 }
+
+export var App = connect((state) => {
+  return {
+    authed: !!state.accessToken,
+  };
+})(_App);

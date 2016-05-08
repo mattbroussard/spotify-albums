@@ -1,8 +1,31 @@
+import * as $ from "jquery";
 import * as React from "react";
-import {doLogin} from "../spotify";
+import {connect} from "react-redux";
 
-export class AuthButton extends React.Component<any, any> {
-  onClick(event: any): void {
+import {doLogin} from "../spotify";
+import {ActionType} from "../actions";
+
+class _AuthButton extends React.Component<any, any> {
+  componentWillMount(): void {
+    $(window).on("message.AuthButton", (event) => {
+      var msg = (event.originalEvent as any).data;
+      msg = JSON.parse(msg);
+      if ("access_token" in msg) {
+        this.props.dispatch({
+          type: ActionType.AuthSuccess,
+          accessToken: msg["access_token"],
+        });
+      } else {
+        alert("Authentication with Spotify failed :(");
+      }
+    });
+  }
+
+  componentWillUnmount(): void {
+    $(window).off(".AuthButton");
+  }
+
+  onClick(): void {
     doLogin();
   }
 
@@ -10,3 +33,5 @@ export class AuthButton extends React.Component<any, any> {
     return (<button onClick={this.onClick}>Auth with Spotify</button>);
   }
 }
+
+export var AuthButton = connect()(_AuthButton);
