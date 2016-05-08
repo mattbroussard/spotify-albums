@@ -16,19 +16,23 @@ class _PlaylistsView extends React.Component<any, any> {
   }
 
   render() {
+    var ret = [];
+
     if (this.props.loading) {
-      return <div>Loading</div>;
-    } else if (!this.props.invalid) {
-      return (
+      ret.push(<div>Loading</div>);
+    }
+
+    if (!this.props.invalid) {
+      ret.push(
         <ul>
           {_.map(this.props.items, (playlist: Playlist) => {
             return <li onClick={this.props.onSelectPlaylist.bind(playlist.id)}>{playlist.name}</li>;
           })}
         </ul>
       );
-    } else {
-      return <div>Invalid</div>;
     }
+
+    return <div>{ret}</div>;
   }
 }
 

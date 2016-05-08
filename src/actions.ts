@@ -18,11 +18,12 @@ function loadPlaylists() {
     });
 
     var accessToken = getState().accessToken;
-    getPlaylists(accessToken, (playlists) => {
+    getPlaylists(accessToken, (playlists, done) => {
       // TODO: flatten tracks/albums here + make subsequent API calls
 
       dispatch({
         type: ActionType.ReceivedPlaylists,
+        done: done,
         playlists: playlists,
       });
     });

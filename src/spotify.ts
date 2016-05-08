@@ -5,6 +5,7 @@ import {Playlist} from "./store";
 
 const DEFAULT_PAGE_LIMIT = 20;
 const REDIRECT_URI = "http://localhost:8000/oauth_callback.html";
+const SPOTIFY_API_PREFIX = "https://api.spotify.com";
 const CLIENT_ID = "3a0d380877cd4590ab63a7c2c1cd1faa";
 const SCOPES = [
   "playlist-read-private",
@@ -27,7 +28,7 @@ export function doLogin() {
 
 function paginatedAPICall(path: string, accessToken: string, data = {}, pageLimit: number = -1,
     callback: (items: any[], done: boolean) => void) {
-  var prefix = path.indexOf("https://api.spotify.com") == 0 ? "" : "https://api.spotify.com";
+  var prefix = path.indexOf(SPOTIFY_API_PREFIX) == 0 ? "" : SPOTIFY_API_PREFIX;
 
   $.ajax({
     url: prefix + path,

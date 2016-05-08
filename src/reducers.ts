@@ -33,7 +33,7 @@ function playlists(state: Playlists = emptyRemoteData(), action): Playlists {
       });
 
       return <Playlists> {
-        loading: false,
+        loading: !action.done,
         invalid: false,
         items: _.extend({}, oldItems, newItems),
       };
