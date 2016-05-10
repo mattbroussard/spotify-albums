@@ -2,7 +2,7 @@ import * as React from "react";
 import {connect} from "react-redux";
 
 import AuthButton from "./AuthButton";
-import {PlaylistsView} from "./PlaylistsView";
+import PlaylistsViewWithFilter from "./PlaylistsViewWithFilter";
 
 class App extends React.Component<any, any> {
   render() {
@@ -10,7 +10,7 @@ class App extends React.Component<any, any> {
       return (
         <div>
           <h1>Successfully authenticated!</h1>
-          <PlaylistsView />
+          <PlaylistsViewWithFilter />
         </div>
       );
     } else {

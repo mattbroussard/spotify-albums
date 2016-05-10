@@ -6,6 +6,17 @@ import {connect} from "react-redux";
 import {RootState, Playlist} from "../store";
 import {loadPlaylistsIfNeeded, selectPlaylist} from "../actions";
 
+interface Props {
+  // from Playlists
+  items: {[id: string]: Playlist};
+  loading: boolean;
+  invalid: boolean;
+
+  filter: string;
+  onSelectPlaylist: (id: string) => void;
+  dispatch: Function;
+}
+
 class PlaylistsView extends React.Component<Props, {}> {
   componentWillMount() {
     this.props.dispatch(loadPlaylistsIfNeeded());
@@ -26,6 +37,10 @@ class PlaylistsView extends React.Component<Props, {}> {
       ret.push(
         <ul>
           {_.map(this.props.items, (playlist: Playlist) => {
+            if (this.props.filter && playlist.name.indexOf(this.props.filter) == -1) {
+              return null;
+            }
+
             return (
               <li onClick={this.props.onSelectPlaylist.bind(null, playlist.id)}>
                 {playlist.name}
@@ -41,7 +56,7 @@ class PlaylistsView extends React.Component<Props, {}> {
 }
 
 function mapStateToProps(state: RootState) {
-  return _.extend({accessToken: state.accessToken}, state.playlists);
+  return _.extend({}, state.playlists);
 }
 
 function mapDispatchToProps(dispatch) {
