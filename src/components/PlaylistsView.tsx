@@ -3,27 +3,22 @@ import * as _ from "lodash";
 import * as React from "react";
 import {connect} from "react-redux";
 
-import {RootState, Playlist} from "../store";
+import {RootState, Playlist, Playlists} from "../store";
 import {loadPlaylistsIfNeeded, selectPlaylist} from "../actions";
 
-interface Props {
-  // from Playlists
-  items: {[id: string]: Playlist};
-  loading: boolean;
-  invalid: boolean;
-
+type Props = Playlists & {
   filter: string;
   onSelectPlaylist: (id: string) => void;
-  dispatch: Function;
-}
+  loadPlaylistsIfNeeded: () => void;
+};
 
 class PlaylistsView extends React.Component<Props, {}> {
   componentWillMount() {
-    this.props.dispatch(loadPlaylistsIfNeeded());
+    this.props.loadPlaylistsIfNeeded();
   }
 
   componentWillReceiveProps(nextProps) {
-    this.props.dispatch(loadPlaylistsIfNeeded());
+    this.props.loadPlaylistsIfNeeded();
   }
 
   render() {
@@ -64,7 +59,9 @@ function mapDispatchToProps(dispatch) {
     onSelectPlaylist: (playlistId) => {
       dispatch(selectPlaylist(playlistId));
     },
-    dispatch
+    loadPlaylistsIfNeeded: () => {
+      dispatch(loadPlaylistsIfNeeded());
+    }
   };
 }
 

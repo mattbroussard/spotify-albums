@@ -9,17 +9,17 @@ interface Props {
 }
 
 interface State {
-  filter: string;
+  filterString: string;
 }
 
 class PlaylistsViewWithFilter extends React.Component<Props, State> {
   constructor(props) {
     super(props);
-    this.state = {filter: ""};
+    this.state = {filterString: ""};
   }
 
   onChange() {
-    this.setState({filter: (this.refs["input"] as HTMLInputElement).value});
+    this.setState({filterString: (this.refs["input"] as HTMLInputElement).value});
   }
 
   render() {
@@ -33,7 +33,7 @@ class PlaylistsViewWithFilter extends React.Component<Props, State> {
     return (
       <div>
         {filter}
-        <PlaylistsView filter={this.props.showFilter ? this.state.filter : ""} />
+        <PlaylistsView filter={this.props.showFilter ? this.state.filterString : ""} />
       </div>
     );
   }
