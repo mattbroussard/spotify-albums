@@ -6,18 +6,20 @@ import {connect} from "react-redux";
 import {RootState, Playlist, Playlists} from "../store";
 import {loadPlaylistsIfNeeded, selectPlaylist} from "../actions";
 
-interface ExternalProps {
+type StateProps = Playlists;
+
+interface OwnProps {
   filter: string;
 }
 
-type ReduxProps = Playlists & {
+interface DispatchProps {
   onSelectPlaylist: (id: string) => void;
   loadPlaylistsIfNeeded: () => void;
-};
+}
 
-type Props = ReduxProps & ExternalProps;
+type AllProps = StateProps & DispatchProps & OwnProps;
 
-class PlaylistsView extends React.Component<Props, {}> {
+class PlaylistsView extends React.Component<AllProps, {}> {
   componentWillMount() {
     this.props.loadPlaylistsIfNeeded();
   }
@@ -55,11 +57,11 @@ class PlaylistsView extends React.Component<Props, {}> {
   }
 }
 
-function mapStateToProps(state: RootState) {
-  return _.extend({}, state.playlists);
+function mapStateToProps(state: RootState): StateProps {
+  return _.extend({}, state.playlists) as Playlists;
 }
 
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch): DispatchProps {
   return {
     onSelectPlaylist: (playlistId) => {
       dispatch(selectPlaylist(playlistId));
@@ -70,10 +72,8 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-// "as ComponentClass" is to workaround this:
-// https://github.com/DefinitelyTyped/DefinitelyTyped/issues/8787#issuecomment-206482943
-export default connect(
+export default connect<StateProps, DispatchProps, OwnProps>(
   mapStateToProps,
   mapDispatchToProps
-)(PlaylistsView) as React.ComponentClass<ExternalProps>;
+)(PlaylistsView);
 
