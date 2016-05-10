@@ -6,7 +6,7 @@ import {connect} from "react-redux";
 import {RootState, Playlist} from "../store";
 import {loadPlaylistsIfNeeded, selectPlaylist} from "../actions";
 
-class _PlaylistsView extends React.Component<any, any> {
+class PlaylistsView extends React.Component<Props, {}> {
   componentWillMount() {
     this.props.dispatch(loadPlaylistsIfNeeded());
   }
@@ -53,7 +53,7 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export var PlaylistsView = connect(
+export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(_PlaylistsView);
+)(PlaylistsView);

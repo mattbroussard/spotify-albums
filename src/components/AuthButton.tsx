@@ -5,7 +5,7 @@ import {connect} from "react-redux";
 import {doLogin} from "../spotify";
 import {ActionType} from "../actions";
 
-class _AuthButton extends React.Component<any, any> {
+class AuthButton extends React.Component<any, any> {
   componentWillMount(): void {
     $(window).on("message.AuthButton", (event) => {
       var msg = (event.originalEvent as any).data;
@@ -38,4 +38,4 @@ class _AuthButton extends React.Component<any, any> {
   }
 }
 
-export var AuthButton = connect()(_AuthButton);
+export default connect()(AuthButton);
