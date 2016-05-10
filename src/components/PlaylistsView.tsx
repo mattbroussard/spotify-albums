@@ -6,11 +6,16 @@ import {connect} from "react-redux";
 import {RootState, Playlist, Playlists} from "../store";
 import {loadPlaylistsIfNeeded, selectPlaylist} from "../actions";
 
-type Props = Playlists & {
+interface ExternalProps {
   filter: string;
+}
+
+type ReduxProps = Playlists & {
   onSelectPlaylist: (id: string) => void;
   loadPlaylistsIfNeeded: () => void;
 };
+
+type Props = ReduxProps & ExternalProps;
 
 class PlaylistsView extends React.Component<Props, {}> {
   componentWillMount() {
@@ -65,7 +70,10 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
+// "as ComponentClass" is to workaround this:
+// https://github.com/DefinitelyTyped/DefinitelyTyped/issues/8787#issuecomment-206482943
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(PlaylistsView);
+)(PlaylistsView) as React.ComponentClass<ExternalProps>;
+
