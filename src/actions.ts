@@ -6,7 +6,6 @@ import {getPlaylists} from "./spotify";
 
 export enum ActionType {
   AuthSuccess,
-  SelectPlaylist,
   RequestedPlaylists,
   ReceivedPlaylists,
 }
@@ -37,11 +36,4 @@ export function loadPlaylistsIfNeeded() {
       return dispatch(loadPlaylists());
     }
   }
-}
-
-export function selectPlaylist(id: string) {
-  return {
-    type: ActionType.SelectPlaylist,
-    id: id,
-  };
 }

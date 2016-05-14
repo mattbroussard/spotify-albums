@@ -4,13 +4,28 @@ import {connect} from "react-redux";
 import AuthButton from "./AuthButton";
 import PlaylistsViewWithFilter from "./PlaylistsViewWithFilter";
 
-class App extends React.Component<any, any> {
+interface State {
+  selectedPlaylist: string;
+}
+
+interface StateProps {
+  authed: boolean;
+}
+
+class App extends React.Component<StateProps, State> {
+  constructor(props) {
+    super(props);
+    this.state = {selectedPlaylist: null};
+  }
+
   render() {
     if (this.props.authed) {
       return (
         <div>
           <h1>Successfully authenticated!</h1>
-          <PlaylistsViewWithFilter />
+          <PlaylistsViewWithFilter
+            onSelectPlaylist={(id) => this.setState({selectedPlaylist: id})}
+            selectedPlaylist={this.state.selectedPlaylist} />
         </div>
       );
     } else {
@@ -19,7 +34,7 @@ class App extends React.Component<any, any> {
   }
 }
 
-export default connect((state) => {
+export default connect<StateProps, {}, {}>((state) => {
   return {
     authed: !!state.accessToken,
   };

@@ -4,16 +4,17 @@ import * as React from "react";
 import {connect} from "react-redux";
 
 import {RootState, Playlist, Playlists} from "../store";
-import {loadPlaylistsIfNeeded, selectPlaylist} from "../actions";
+import {loadPlaylistsIfNeeded} from "../actions";
 
 type StateProps = Playlists;
 
 interface OwnProps {
   filter: string;
+  selectedPlaylist: string;
+  onSelectPlaylist: (id: string) => void;
 }
 
 interface DispatchProps {
-  onSelectPlaylist: (id: string) => void;
   loadPlaylistsIfNeeded: () => void;
 }
 
@@ -43,8 +44,12 @@ class PlaylistsView extends React.Component<AllProps, {}> {
               return null;
             }
 
+            let selected: boolean = this.props.selectedPlaylist == playlist.id;
+
             return (
-              <li onClick={this.props.onSelectPlaylist.bind(null, playlist.id)}>
+              <li
+                className={selected ? "selected" : null}
+                onClick={this.props.onSelectPlaylist.bind(null, playlist.id)}>
                 {playlist.name}
               </li>
             );
@@ -63,9 +68,6 @@ function mapStateToProps(state: RootState): StateProps {
 
 function mapDispatchToProps(dispatch): DispatchProps {
   return {
-    onSelectPlaylist: (playlistId) => {
-      dispatch(selectPlaylist(playlistId));
-    },
     loadPlaylistsIfNeeded: () => {
       dispatch(loadPlaylistsIfNeeded());
     }

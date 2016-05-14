@@ -4,15 +4,22 @@ import {connect} from "react-redux";
 
 import PlaylistsView from "./PlaylistsView";
 
-interface Props {
+interface StateProps {
   showFilter: boolean;
 }
+
+interface OwnProps {
+  onSelectPlaylist: (id: string) => void;
+  selectedPlaylist: string;
+}
+
+type AllProps = OwnProps & StateProps;
 
 interface State {
   filterString: string;
 }
 
-class PlaylistsViewWithFilter extends React.Component<Props, State> {
+class PlaylistsViewWithFilter extends React.Component<AllProps, State> {
   constructor(props) {
     super(props);
     this.state = {filterString: ""};
@@ -33,13 +40,16 @@ class PlaylistsViewWithFilter extends React.Component<Props, State> {
     return (
       <div>
         {filter}
-        <PlaylistsView filter={this.props.showFilter ? this.state.filterString : ""} />
+        <PlaylistsView
+          selectedPlaylist={this.props.selectedPlaylist}
+          onSelectPlaylist={this.props.onSelectPlaylist}
+          filter={this.props.showFilter ? this.state.filterString : ""} />
       </div>
     );
   }
 }
 
-export default connect(
+export default connect<StateProps, {}, OwnProps>(
   // mapStateToProps
   (state) => {
     return {showFilter: !state.playlists.invalid};
