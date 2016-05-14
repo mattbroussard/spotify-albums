@@ -5,7 +5,11 @@ import {connect} from "react-redux";
 import {doLogin} from "../spotify";
 import {ActionType} from "../actions";
 
-class AuthButton extends React.Component<any, any> {
+interface DispatchProps {
+  onAuthSuccess: (accessToken: string) => void;
+}
+
+class AuthButton extends React.Component<DispatchProps, {}> {
   componentWillMount(): void {
     $(window).on("message.AuthButton", (event) => {
       var msg = (event.originalEvent as any).data;
@@ -15,11 +19,9 @@ class AuthButton extends React.Component<any, any> {
       }
 
       if ("access_token" in msg) {
-        this.props.dispatch({
-          type: ActionType.AuthSuccess,
-          accessToken: msg["access_token"],
-        });
+        this.props.onAuthSuccess(msg["access_token"]);
       } else {
+        // TODO: handle this better
         alert("Authentication with Spotify failed :(");
       }
     });
@@ -38,4 +40,19 @@ class AuthButton extends React.Component<any, any> {
   }
 }
 
-export default connect()(AuthButton);
+export default connect(
+  // mapStateToProps
+  undefined,
+
+  // mapDispatchToProps
+  (dispatch) => {
+    return {
+      onAuthSuccess: (accessToken) => {
+        dispatch({
+          type: ActionType.AuthSuccess,
+          accessToken: accessToken,
+        });
+      }
+    }
+  }
+)(AuthButton);

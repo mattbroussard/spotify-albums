@@ -30,6 +30,7 @@ function paginatedAPICall(path: string, accessToken: string, data = {}, pageLimi
     callback: (items: any[], done: boolean) => void) {
   var prefix = path.indexOf(SPOTIFY_API_PREFIX) == 0 ? "" : SPOTIFY_API_PREFIX;
 
+  // TODO: handle failure properly
   $.ajax({
     url: prefix + path,
     headers: {
