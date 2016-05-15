@@ -1,5 +1,5 @@
 
-interface RemoteData<T> {
+export interface RemoteData<T> {
   loading: boolean;
   invalid: boolean;
   items: {[id: string]: T};

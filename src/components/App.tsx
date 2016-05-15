@@ -1,6 +1,7 @@
 import * as React from "react";
 import {connect} from "react-redux";
 
+import {RootState} from "../store";
 import AuthButton from "./AuthButton";
 import PlaylistsViewWithFilter from "./PlaylistsViewWithFilter";
 import AlbumsView from "./AlbumsView";
@@ -37,8 +38,12 @@ class App extends React.Component<StateProps, State> {
   }
 }
 
-export default connect<StateProps, {}, {}>((state) => {
+function mapStateToProps(state: RootState): StateProps {
   return {
     authed: !!state.accessToken,
   };
-})(App);
+}
+
+export default connect<StateProps, {}, {}>(
+  mapStateToProps
+)(App);
