@@ -2,7 +2,7 @@ import * as React from "react";
 import {connect} from "react-redux";
 
 import {RootState} from "../store";
-import AuthButton from "./AuthButton";
+import AuthPage from "./AuthPage";
 import PlaylistsViewWithFilter from "./PlaylistsViewWithFilter";
 import AlbumsView from "./AlbumsView";
 
@@ -23,17 +23,16 @@ class App extends React.Component<StateProps, State> {
   render() {
     if (this.props.authed) {
       return (
-        <div>
-          <h1>Successfully authenticated!</h1>
-          <AlbumsView
-            playlistId={this.state.selectedPlaylist} />
+        <div className="main-page">
           <PlaylistsViewWithFilter
             onSelectPlaylist={(id) => this.setState({selectedPlaylist: id})}
             selectedPlaylist={this.state.selectedPlaylist} />
+          <AlbumsView
+            playlistId={this.state.selectedPlaylist} />
         </div>
       );
     } else {
-      return <AuthButton />;
+      return <AuthPage />;
     }
   }
 }

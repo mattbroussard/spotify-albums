@@ -9,9 +9,9 @@ interface DispatchProps {
   onAuthSuccess: (accessToken: string) => void;
 }
 
-class AuthButton extends React.Component<DispatchProps, {}> {
+class AuthPage extends React.Component<DispatchProps, {}> {
   componentWillMount(): void {
-    $(window).on("message.AuthButton", (event) => {
+    $(window).on("message.AuthPage", (event) => {
       var msg = (event.originalEvent as any).data;
       // Looks like Redux DevTools extension uses postMessage...
       if (!("is_oauth_callback" in msg)) {
@@ -28,7 +28,7 @@ class AuthButton extends React.Component<DispatchProps, {}> {
   }
 
   componentWillUnmount(): void {
-    $(window).off(".AuthButton");
+    $(window).off(".AuthPage");
   }
 
   onClick(): void {
@@ -36,7 +36,13 @@ class AuthButton extends React.Component<DispatchProps, {}> {
   }
 
   render() {
-    return (<button onClick={this.onClick}>Auth with Spotify</button>);
+    return (
+      <div className="auth-page">
+        <button
+          className="auth-button"
+          onClick={this.onClick}>Login with Spotify</button>
+      </div>
+    );
   }
 }
 
@@ -55,4 +61,4 @@ export default connect(
       }
     }
   }
-)(AuthButton);
+)(AuthPage);
