@@ -1,9 +1,9 @@
 
+import * as classnames from "classnames";
 import * as React from "react";
 import {connect} from "react-redux";
 
 import PlaylistsView from "./PlaylistsView";
-
 interface StateProps {
   showFilter: boolean;
 }
@@ -32,13 +32,18 @@ class PlaylistsViewWithFilter extends React.Component<AllProps, State> {
   render() {
     var filter = this.props.showFilter ? (
       <input
+        className="filter-input"
         type="text"
         ref="input"
+        placeholder="Filter Playlists..."
         onKeyUp={this.onChange.bind(this)} />
     ) : null;
 
     return (
-      <div>
+      <div className={classnames({
+        "playlists-view-with-filter": true,
+        "has-filter": this.props.showFilter,
+      })}>
         {filter}
         <PlaylistsView
           selectedPlaylist={this.props.selectedPlaylist}

@@ -45,7 +45,7 @@ class AlbumsView extends React.Component<AllProps, {}> {
       </ul>);
     }
 
-    return <div>{ret}</div>;
+    return <div className="albums-view">{ret}</div>;
   }
 }
 

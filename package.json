@@ -5,6 +5,7 @@
   "main": "lib/bundle.js",
   "author": "Matt Broussard",
   "dependencies": {
+    "classnames": "^2.2.5",
     "jQuery": "^1.7.4",
     "jquery": "^2.2.3",
     "lodash": "^4.11.2",

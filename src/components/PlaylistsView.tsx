@@ -58,7 +58,7 @@ class PlaylistsView extends React.Component<AllProps, {}> {
       );
     }
 
-    return <div>{ret}</div>;
+    return <div className="playlists-view">{ret}</div>;
   }
 }
 

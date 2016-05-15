@@ -1,8 +1,11 @@
 
-body {
+body, html {
   font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
   background-color: #181818;
   color: white;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
 }
 
 .auth-page {
@@ -32,4 +35,51 @@ body {
   outline: none;
   -webkit-user-select: none;
   cursor: pointer;
+}
+
+.main-page {
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: row;
+  flex-wrap: no-wrap;
+}
+
+.playlists-view-with-filter {
+  width: 200px;
+  background: #ccc;
+  flex-grow: 0;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.playlists-view-with-filter .filter-input {
+  box-sizing: border-box;
+  width: 100%;
+  border: 0;
+  outline: 0;
+  font-size: 14px;
+  margin: 0;
+  margin-top: 10px;
+  padding: 4px;
+  flex-grow: 0;
+  flex-shrink: 0;
+  order: 2;
+}
+
+.playlists-view {
+  flex-grow: 1;
+  overflow-x: hidden;
+  overflow-y: auto;
+  order: 1;
+}
+
+.albums-view {
+  background: #aaa;
+  flex-grow: 1;
 }
