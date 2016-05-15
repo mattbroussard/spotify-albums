@@ -9,7 +9,7 @@ import {loadPlaylistsIfNeeded} from "../actions";
 type StateProps = Playlists;
 
 interface OwnProps {
-  filter: string;
+  filterFn: (playlist: Playlist) => boolean;
   selectedPlaylist: string;
   onSelectPlaylist: (id: string) => void;
 }
@@ -40,7 +40,7 @@ class PlaylistsView extends React.Component<AllProps, {}> {
       ret.push(
         <ul>
           {_.map(this.props.items, (playlist: Playlist) => {
-            if (this.props.filter && playlist.name.indexOf(this.props.filter) == -1) {
+            if (this.props.filterFn && !this.props.filterFn(playlist)) {
               return null;
             }
 

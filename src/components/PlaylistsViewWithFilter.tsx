@@ -3,7 +3,9 @@ import * as classnames from "classnames";
 import * as React from "react";
 import {connect} from "react-redux";
 
+import {Playlist} from "../store";
 import PlaylistsView from "./PlaylistsView";
+
 interface StateProps {
   showFilter: boolean;
 }
@@ -29,6 +31,13 @@ class PlaylistsViewWithFilter extends React.Component<AllProps, State> {
     this.setState({filterString: (this.refs["input"] as HTMLInputElement).value});
   }
 
+  filter(playlist: Playlist): boolean {
+    if (this.state.filterString) {
+      return playlist.name.toLowerCase().indexOf(this.state.filterString.toLowerCase()) >= 0;
+    }
+    return true;
+  }
+
   render() {
     var filter = this.props.showFilter ? (
       <input
@@ -48,7 +57,7 @@ class PlaylistsViewWithFilter extends React.Component<AllProps, State> {
         <PlaylistsView
           selectedPlaylist={this.props.selectedPlaylist}
           onSelectPlaylist={this.props.onSelectPlaylist}
-          filter={this.props.showFilter ? this.state.filterString : ""} />
+          filterFn={this.filter.bind(this)} />
       </div>
     );
   }
