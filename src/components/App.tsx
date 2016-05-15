@@ -3,6 +3,7 @@ import {connect} from "react-redux";
 
 import AuthButton from "./AuthButton";
 import PlaylistsViewWithFilter from "./PlaylistsViewWithFilter";
+import AlbumsView from "./AlbumsView";
 
 interface State {
   selectedPlaylist: string;
@@ -23,6 +24,8 @@ class App extends React.Component<StateProps, State> {
       return (
         <div>
           <h1>Successfully authenticated!</h1>
+          <AlbumsView
+            playlistId={this.state.selectedPlaylist} />
           <PlaylistsViewWithFilter
             onSelectPlaylist={(id) => this.setState({selectedPlaylist: id})}
             selectedPlaylist={this.state.selectedPlaylist} />

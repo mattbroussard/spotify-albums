@@ -1,7 +1,8 @@
 
 import * as $ from "jquery";
+import * as _ from 'lodash';
 
-import {Playlist} from "./store";
+import {Playlist, Track} from "./store";
 
 const DEFAULT_PAGE_LIMIT = 20;
 const REDIRECT_URI = "http://localhost:8000/oauth_callback.html";
@@ -47,15 +48,31 @@ function paginatedAPICall(path: string, accessToken: string, data = {}, pageLimi
   });
 }
 
-export function getPlaylists(accessToken,
+export function getPlaylists(accessToken: string,
     callback: (playlists: Playlist[], done?: boolean) => void) {
   paginatedAPICall("/v1/me/playlists", accessToken,
       {
         limit: 50,
-        // fields: "",
+        fields: "items(id,name,uri,owner,tracks),next",
       },
       DEFAULT_PAGE_LIMIT,
       (playlists, done) => {
         callback(<Playlist[]> playlists, done);
+      });
+}
+
+export function getTracksForPlaylist(accessToken: string, playlistId: string,
+    ownerId: string, callback: (tracks: Track[], done?: boolean) => void) {
+  var url = "/v1/users/" + encodeURIComponent(ownerId) + "/playlists/" +
+      encodeURIComponent(playlistId) + "/tracks";
+  paginatedAPICall(url, accessToken,
+      {
+        limit: 50,
+        fields: "items(track(artists(name,uri,id),album(images,name,uri,id,artists))),next",
+      },
+      DEFAULT_PAGE_LIMIT,
+      (playlistItems, done) => {
+        // apparently _.pluck is no more...
+        callback(<Track[]> _.map(playlistItems, "track"), done);
       });
 }

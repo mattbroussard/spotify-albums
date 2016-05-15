@@ -2,16 +2,8 @@
 import * as _ from 'lodash';
 import {combineReducers} from 'redux';
 
-import {RootState, Playlists, Tracks, Albums} from './store';
+import {RootState, Playlists, AlbumsByPlaylist, emptyRemoteData} from './store';
 import {ActionType} from './actions';
-
-function emptyRemoteData(): any {
-  return {
-    loading: false,
-    invalid: true,
-    items: {},
-  };
-}
 
 function accessToken(state: string = null, action): string {
   if (action.type == ActionType.AuthSuccess) {
@@ -41,17 +33,27 @@ function playlists(state: Playlists = emptyRemoteData(), action): Playlists {
   return state;
 }
 
-function tracks(state: Tracks = emptyRemoteData(), action): Tracks {
-  return state;
-}
+function albums(state: AlbumsByPlaylist = {}, action): AlbumsByPlaylist {
+  switch (action.type) {
+    case ActionType.RequestedAlbums:
+      var data = _.extend(emptyRemoteData(), state[action.playlistId], {loading: true});
+      return <AlbumsByPlaylist> _.extend({}, state, {[action.playlistId]: data});
 
-function albums(state: Albums = emptyRemoteData(), action): Albums {
+    case ActionType.ReceivedAlbums:
+      var oldItems = state[action.playlistId].items;
+      var newData = {
+        loading: !action.done,
+        invalid: false,
+        items: _.extend({}, oldItems, action.albums)
+      };
+
+      return <AlbumsByPlaylist> _.extend({}, state, {[action.playlistId]: newData});
+  }
   return state;
 }
 
 export var rootReducer = combineReducers({
   accessToken,
   playlists,
-  tracks,
   albums,
 });
