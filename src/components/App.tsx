@@ -24,11 +24,17 @@ class App extends React.Component<StateProps, State> {
     if (this.props.authed) {
       return (
         <div className="main-page">
-          <PlaylistsViewWithFilter
-            onSelectPlaylist={(id) => this.setState({selectedPlaylist: id})}
-            selectedPlaylist={this.state.selectedPlaylist} />
-          <AlbumsView
-            playlistId={this.state.selectedPlaylist} />
+          <div className="main-page-content">
+            <div className="left-sidebar">
+              <PlaylistsViewWithFilter
+                onSelectPlaylist={(id) => this.setState({selectedPlaylist: id})}
+                selectedPlaylist={this.state.selectedPlaylist} />
+            </div>
+            <div className="right-content">
+              <AlbumsView
+                playlistId={this.state.selectedPlaylist} />
+            </div>
+          </div>
         </div>
       );
     } else {
