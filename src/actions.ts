@@ -3,6 +3,7 @@ import * as $ from "jquery";
 
 import {Playlists, Track, Album, Artist} from "./store";
 import {getPlaylists, getTracksForPlaylist} from "./spotify";
+import {clearPersistentData} from "./persist";
 
 // This is a class instead of an enum so that human-friendly string values
 // show up in Redux dev tools
@@ -12,6 +13,30 @@ export class ActionType {
   static ReceivedPlaylists = "ReceivedPlaylists";
   static RequestedAlbums = "RequestedAlbums";
   static ReceivedAlbums = "ReceivedAlbums";
+  static Logout = "Logout";
+  static ClearPlaylists = "ClearPlaylists";
+  static ClearAlbums = "ClearAlbums";
+}
+
+export function logout() {
+  return (dispatch) => {
+    dispatch({type: ActionType.Logout});
+    clearPersistentData();
+  };
+}
+
+export function refreshPlaylists() {
+  return (dispatch) => {
+    dispatch({type: ActionType.ClearPlaylists});
+    dispatch(loadPlaylistsIfNeeded());
+  };
+}
+
+export function refreshAlbums(playlistId: string) {
+  return (dispatch) => {
+    dispatch({type: ActionType.ClearAlbums, playlistId: playlistId});
+    dispatch(loadAlbumsIfNeeded(playlistId));
+  };
 }
 
 function loadPlaylists() {

@@ -6,8 +6,11 @@ import {RootState, Playlists, AlbumsByPlaylist, emptyRemoteData} from './store';
 import {ActionType} from './actions';
 
 function accessToken(state: string = null, action): string {
-  if (action.type == ActionType.AuthSuccess) {
-    return action.accessToken;
+  switch (action.type) {
+    case ActionType.AuthSuccess:
+      return action.accessToken;
+    case ActionType.Logout:
+      return null;
   }
   return state;
 }
@@ -29,6 +32,10 @@ function playlists(state: Playlists = emptyRemoteData(), action): Playlists {
         invalid: false,
         items: _.extend({}, oldItems, newItems),
       };
+
+    case ActionType.Logout:
+    case ActionType.ClearPlaylists:
+      return emptyRemoteData();
   }
   return state;
 }
@@ -48,6 +55,17 @@ function albums(state: AlbumsByPlaylist = {}, action): AlbumsByPlaylist {
       };
 
       return <AlbumsByPlaylist> _.extend({}, state, {[action.playlistId]: newData});
+
+    case ActionType.ClearAlbums:
+      if (action.playlistId in state) {
+        var newCopy = _.clone(state);
+        delete newCopy[action.playlistId];
+        return newCopy;
+      }
+
+    case ActionType.Logout:
+    case ActionType.ClearPlaylists:
+      return {};
   }
   return state;
 }

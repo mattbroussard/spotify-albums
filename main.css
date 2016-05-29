@@ -52,7 +52,90 @@ body, html {
   flex-direction: column;
 }
 
-.main-page-content {
+.header {
+  height: 35px;
+  background-color: white;
+  color: black;
+  font-size: 18px;
+  line-height: 35px;
+
+  flex: none;
+  display: flex;
+  flex-direction: row;
+}
+
+.header-left {
+  width: 50%;
+  padding-left: 8px;
+}
+
+.header-right {
+  width: 50%;
+  text-align: right;
+  padding-right: 6px;
+}
+
+.menu {
+  background: transparent;
+  outline: 0 none;
+  border: 0 none;
+  width: 35px;
+  height: 35px;
+  font-size: 20px;
+  line-height: 25px;
+  position: relative;
+}
+
+.menu ul {
+  display: none;
+}
+
+.menu.menu-open {
+  background-color: #333333;
+  color: #A0A0A0;
+}
+
+.menu.menu-open ul {
+  display: block;
+  position: absolute;
+  top: 100%;
+  background-color: #333333;
+  color: #A0A0A0;
+  width: 180px;
+  right: 0;
+  margin: 0;
+  list-style: none;
+  color: white;
+  text-align: left;
+  padding: 0;
+  z-index: 10;
+}
+
+.menu.menu-open ul li {
+  list-style: none;
+  margin: 0;
+  padding-left: 8px;
+  padding-right: 8px;
+  height: 30px;
+  line-height: 30px;
+  font-size: 16px;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+}
+
+.menu.menu-open ul li:hover {
+  background-color: #404040;
+  color: #BABABA;
+}
+
+.about-link {
+  color: #A4A4A4;
+  text-decoration: none;
+  margin-right: 10px;
+  line-height: 35px;
+}
+
+.content {
   display: flex;
   flex-direction: row;
 }
