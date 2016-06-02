@@ -4,12 +4,19 @@ import {connect} from "react-redux";
 
 import {doLogin} from "../spotify";
 import {ActionType} from "../actions";
+import {RootState} from "../store";
+
+interface StateProps {
+  everSuccessfullyAuthenticated: boolean;
+}
 
 interface DispatchProps {
   onAuthSuccess: (accessToken: string) => void;
 }
 
-class AuthPage extends React.Component<DispatchProps, {}> {
+type AllProps = StateProps & DispatchProps;
+
+class AuthPage extends React.Component<AllProps, {}> {
   componentWillMount(): void {
     $(window).on("message.AuthPage", (event) => {
       var msg = (event.originalEvent as any).data;
@@ -36,8 +43,19 @@ class AuthPage extends React.Component<DispatchProps, {}> {
   }
 
   render() {
+    var reauthMessage = null;
+    if (this.props.everSuccessfullyAuthenticated) {
+      reauthMessage = (
+        <div className="reauth-message">
+          <h1>Sorry for the interruption...</h1>
+          <p>Your Spotify login token has expired. Please login again.</p>
+        </div>
+      );
+    }
+
     return (
       <div className="auth-page">
+        {reauthMessage}
         <button
           className="auth-button"
           onClick={this.onClick}>Login with Spotify</button>
@@ -48,7 +66,9 @@ class AuthPage extends React.Component<DispatchProps, {}> {
 
 export default connect(
   // mapStateToProps
-  undefined,
+  (state: RootState) => {
+    return {everSuccessfullyAuthenticated: state.everSuccessfullyAuthenticated};
+  },
 
   // mapDispatchToProps
   (dispatch) => {

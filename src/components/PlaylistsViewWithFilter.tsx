@@ -66,6 +66,6 @@ class PlaylistsViewWithFilter extends React.Component<AllProps, State> {
 export default connect<StateProps, {}, OwnProps>(
   // mapStateToProps
   (state) => {
-    return {showFilter: !state.playlists.invalid};
+    return {showFilter: !state.playlists.invalid && !state.playlists.error};
   }
 )(PlaylistsViewWithFilter);

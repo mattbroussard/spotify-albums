@@ -16,6 +16,11 @@ export class ActionType {
   static Logout = "Logout";
   static ClearPlaylists = "ClearPlaylists";
   static ClearAlbums = "ClearAlbums";
+  static ReauthNeeded = "ReauthNeeded";
+  static LoadPlaylistsError = "LoadPlaylistsError";
+  static LoadAlbumsError = "LoadAlbumsError";
+  static DismissLoadPlaylistsError = "DismissLoadPlaylistsError";
+  static DismissLoadAlbumsError = "DismissLoadAlbumsError";
 }
 
 export function logout() {
@@ -39,6 +44,21 @@ export function refreshAlbums(playlistId: string) {
   };
 }
 
+function getLoadingErrorHandler(dispatch, action): (jqXHR: any) => any {
+  return (jqXHR: any) => {
+    if (jqXHR.status == 401) {
+      // If we got a 401, then we need to re-auth
+      dispatch({type: ActionType.ReauthNeeded});
+    }
+
+    if (action) {
+      // Automatically retry after re-auth, otherwise not
+      action.autoRetry = jqXHR.status == 401;
+      dispatch(action);
+    }
+  };
+}
+
 function loadPlaylists() {
   return (dispatch, getState) => {
     var accessToken = getState().accessToken;
@@ -54,7 +74,7 @@ function loadPlaylists() {
         done: done,
         playlists: playlists,
       });
-    });
+    }, getLoadingErrorHandler(dispatch, {type: ActionType.LoadPlaylistsError}));
   };
 }
 
@@ -97,14 +117,14 @@ function loadAlbums(playlistId: string) {
         albums: albums,
         done: done,
       });
-    });
+    }, getLoadingErrorHandler(dispatch, {type: ActionType.LoadAlbumsError, playlistId}));
   };
 }
 
 export function loadPlaylistsIfNeeded() {
   return (dispatch, getState) => {
     var { accessToken, playlists } = getState();
-    if (!playlists.loading && playlists.invalid && !!accessToken) {
+    if (!playlists.loading && playlists.invalid && !playlists.error && !!accessToken) {
       return dispatch(loadPlaylists());
     }
   }
@@ -114,8 +134,19 @@ export function loadAlbumsIfNeeded(playlistId: string) {
   return (dispatch, getState) => {
     var { accessToken, albums } = getState();
     albums = albums[playlistId];
-    if (!!accessToken && (!albums || (!albums.loading && albums.invalid))) {
+    if (!!accessToken && (!albums || (!albums.loading && albums.invalid && !albums.error))) {
       return dispatch(loadAlbums(playlistId));
     }
   }
+}
+
+export function dismissLoadPlaylistsError() {
+  return {type: ActionType.DismissLoadPlaylistsError};
+}
+
+export function dismissLoadAlbumsError(playlistId: string) {
+  return {
+    type: ActionType.DismissLoadAlbumsError,
+    playlistId: playlistId,
+  };
 }

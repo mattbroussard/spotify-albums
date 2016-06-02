@@ -20,9 +20,11 @@ body, html {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
 }
 
-.auth-button {
+.auth-button,
+.error-dialog button {
   font-size: 18px;
   background-color: #2ebd59;
   color: white;
@@ -37,6 +39,10 @@ body, html {
   outline: none;
   -webkit-user-select: none;
   cursor: pointer;
+}
+
+.reauth-message {
+  margin-bottom: 20px;
 }
 
 .main-page {
@@ -141,7 +147,9 @@ body, html {
 }
 
 .right-content {
+  position: relative;
   display: flex;
+  flex: 1;
 }
 
 .left-sidebar {
@@ -149,6 +157,7 @@ body, html {
   background: #282828;
   flex: none;
   display: flex;
+  position: relative;
 }
 
 .playlists-view-with-filter {
@@ -276,4 +285,31 @@ body, html {
 .album-artist {
   color: #A6A8AB;
   font-size: 13px;
+}
+
+.error-dialog-outer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.error-dialog {
+  background-color: white;
+  color: black;
+  border-radius: 5px;
+  padding: 20px;
+  text-align: center;
+  flex: 0;
+}
+
+.error-dialog h1 {
+  font-size: 18px;
+  margin-bottom: 25px;
 }

@@ -6,7 +6,8 @@ import * as ReactDom from "react-dom";
 import {connect} from "react-redux";
 
 import {RootState, AlbumsByPlaylist, Album, Albums, emptyRemoteData, AlbumImage} from "../store";
-import {loadAlbumsIfNeeded} from "../actions";
+import {loadAlbumsIfNeeded, dismissLoadAlbumsError} from "../actions";
+import ErrorDialog from "./ErrorDialog";
 
 interface OwnProps {
   playlistId: string;
@@ -14,6 +15,7 @@ interface OwnProps {
 
 interface DispatchProps {
   loadAlbumsIfNeeded: (playlistId: string) => void;
+  retryLoading: (playlistId: string) => void;
 }
 
 type StateProps = Albums;
@@ -30,6 +32,10 @@ class AlbumsView extends React.Component<AllProps, {}> {
   }
 
   render() {
+    if (this.props.error) {
+      return <ErrorDialog onRetry={() => this.props.retryLoading(this.props.playlistId)} />;
+    }
+
     if (this.props.invalid && !this.props.loading) {
       return null;
     }
@@ -126,10 +132,13 @@ function mapStateToProps(state: RootState, ownProps: OwnProps): StateProps {
 
 function mapDispatchToProps(dispatch): DispatchProps {
   return {
-    loadAlbumsIfNeeded: (playlistId) => {
+    loadAlbumsIfNeeded: (playlistId: string) => {
       if (playlistId) {
         dispatch(loadAlbumsIfNeeded(playlistId));
       }
+    },
+    retryLoading: (playlistId: string) => {
+      dispatch(dismissLoadAlbumsError(playlistId));
     }
   };
 }

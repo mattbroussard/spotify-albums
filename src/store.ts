@@ -3,6 +3,7 @@ export interface RemoteData<T> {
   loading: boolean;
   invalid: boolean;
   items: {[id: string]: T};
+  error?: boolean;
 }
 
 interface RemotePtr {
@@ -14,6 +15,7 @@ export function emptyRemoteData(): any { // RemoteData
   return {
     loading: false,
     invalid: true,
+    error: false,
     items: {},
   };
 }
@@ -79,4 +81,5 @@ export interface RootState {
   accessToken?: string;
   playlists: Playlists;
   albums: AlbumsByPlaylist;
+  everSuccessfullyAuthenticated: boolean;
 }

@@ -25,7 +25,7 @@ class App extends React.Component<StateProps, State> {
     // Prevent keeping stale selectedPlaylist around after logout
     // If we did, we'd try to load it in the albums view after logging back
     // in before having an ownerId for it.
-    if (!nextProps.authed) {
+    if (this.props.authed && !nextProps.authed) {
       this.setState({selectedPlaylist: null});
     }
   }

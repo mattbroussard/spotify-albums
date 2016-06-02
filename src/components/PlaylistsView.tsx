@@ -4,7 +4,8 @@ import * as React from "react";
 import {connect} from "react-redux";
 
 import {RootState, Playlist, Playlists} from "../store";
-import {loadPlaylistsIfNeeded} from "../actions";
+import {loadPlaylistsIfNeeded, dismissLoadPlaylistsError} from "../actions";
+import ErrorDialog from "./ErrorDialog";
 
 type StateProps = Playlists;
 
@@ -16,6 +17,7 @@ interface OwnProps {
 
 interface DispatchProps {
   loadPlaylistsIfNeeded: () => void;
+  retryLoading: () => void;
 }
 
 type AllProps = StateProps & DispatchProps & OwnProps;
@@ -29,9 +31,12 @@ class PlaylistsView extends React.Component<AllProps, {}> {
     this.props.loadPlaylistsIfNeeded();
   }
 
-  render() {
-    var ret = [];
+  render(): any {
+    if (this.props.error) {
+      return <ErrorDialog onRetry={() => this.props.retryLoading()}/>;
+    }
 
+    var ret = [];
     if (this.props.loading) {
       ret.push(<div>Loading</div>);
     }
@@ -70,6 +75,9 @@ function mapDispatchToProps(dispatch): DispatchProps {
   return {
     loadPlaylistsIfNeeded: () => {
       dispatch(loadPlaylistsIfNeeded());
+    },
+    retryLoading: () => {
+      dispatch(dismissLoadPlaylistsError());
     }
   };
 }

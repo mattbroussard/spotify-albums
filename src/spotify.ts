@@ -28,10 +28,9 @@ export function doLogin() {
 }
 
 function paginatedAPICall(path: string, accessToken: string, data = {}, pageLimit: number = -1,
-    callback: (items: any[], done: boolean) => void) {
+    callback: (items: any[], done: boolean) => void, errorCallback?: (jqXHR: any) => void) {
   var prefix = path.indexOf(SPOTIFY_API_PREFIX) == 0 ? "" : SPOTIFY_API_PREFIX;
 
-  // TODO: handle failure properly
   $.ajax({
     url: prefix + path,
     headers: {
@@ -43,13 +42,18 @@ function paginatedAPICall(path: string, accessToken: string, data = {}, pageLimi
     var done = !data["next"] || pageLimit == 1 || !items;
     callback(items, done);
     if (!done) {
-      paginatedAPICall(data["next"], accessToken, {}, pageLimit - 1, callback);
+      paginatedAPICall(data["next"], accessToken, {}, pageLimit - 1, callback, errorCallback);
+    }
+  }).fail((jqXHR, textStatus, errorThrown) => {
+    if (errorCallback) {
+      errorCallback(jqXHR);
     }
   });
 }
 
 export function getPlaylists(accessToken: string,
-    callback: (playlists: Playlist[], done?: boolean) => void) {
+    callback: (playlists: Playlist[], done?: boolean) => void,
+    errorCallback?: (jqXHR: any) => void) {
   paginatedAPICall("/v1/me/playlists", accessToken,
       {
         limit: 50,
@@ -58,11 +62,13 @@ export function getPlaylists(accessToken: string,
       DEFAULT_PAGE_LIMIT,
       (playlists, done) => {
         callback(<Playlist[]> playlists, done);
-      });
+      },
+      errorCallback);
 }
 
 export function getTracksForPlaylist(accessToken: string, playlistId: string,
-    ownerId: string, callback: (tracks: Track[], done?: boolean) => void) {
+    ownerId: string, callback: (tracks: Track[], done?: boolean) => void,
+    errorCallback?: (jqXHR: any) => void) {
   var url = "/v1/users/" + encodeURIComponent(ownerId) + "/playlists/" +
       encodeURIComponent(playlistId) + "/tracks";
   paginatedAPICall(url, accessToken,
@@ -74,5 +80,6 @@ export function getTracksForPlaylist(accessToken: string, playlistId: string,
       (playlistItems, done) => {
         // apparently _.pluck is no more...
         callback(<Track[]> _.map(playlistItems, "track"), done);
-      });
+      },
+      errorCallback);
 }
