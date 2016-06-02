@@ -9,13 +9,8 @@ body, html {
 }
 
 .auth-page {
-  position: absolute;
-  top: 0;
-  left: 0;
-  margin: 0;
-  padding: 0;
-  width: 100vw;
-  height: 100vh;
+  flex-grow: 1;
+  flex-shrink: 0;
 
   display: flex;
   align-items: center;
@@ -144,6 +139,7 @@ body, html {
 .content {
   display: flex;
   flex-direction: row;
+  flex-grow: 1;
 }
 
 .right-content {

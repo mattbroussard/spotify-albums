@@ -31,26 +31,28 @@ class App extends React.Component<StateProps, State> {
   }
 
   render() {
-    if (this.props.authed) {
-      return (
-        <div className="main-page">
-          <Header selectedPlaylist={this.state.selectedPlaylist} />
-          <div className="content">
-            <div className="left-sidebar">
-              <PlaylistsViewWithFilter
-                onSelectPlaylist={(id) => this.setState({selectedPlaylist: id})}
-                selectedPlaylist={this.state.selectedPlaylist} />
-            </div>
-            <div className="right-content">
-              <AlbumsView
-                playlistId={this.state.selectedPlaylist} />
-            </div>
-          </div>
+    var innerContent = this.props.authed ? [
+      <div key="left-sidebar" className="left-sidebar">
+        <PlaylistsViewWithFilter
+          onSelectPlaylist={(id) => this.setState({selectedPlaylist: id})}
+          selectedPlaylist={this.state.selectedPlaylist} />
+      </div>,
+      <div key="right-content" className="right-content">
+        <AlbumsView
+          playlistId={this.state.selectedPlaylist} />
+      </div>
+    ] : (<AuthPage />);
+
+    return (
+      <div className="main-page">
+        <Header
+          showMenu={this.props.authed}
+          selectedPlaylist={this.state.selectedPlaylist} />
+        <div className="content">
+          {innerContent}
         </div>
-      );
-    } else {
-      return <AuthPage />;
-    }
+      </div>
+    );
   }
 }
 

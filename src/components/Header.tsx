@@ -7,6 +7,7 @@ import {logout, refreshPlaylists, refreshAlbums} from "../actions";
 
 interface OwnProps {
   selectedPlaylist: string;
+  showMenu: boolean;
 }
 
 interface DispatchProps {
@@ -29,16 +30,30 @@ class Header extends React.Component<AllProps, State> {
   }
 
   render() {
-    var refreshCurrentItem = this.props.selectedPlaylist ?
-        <li
-          onClick={() => this.props.refreshAlbums(this.props.selectedPlaylist)}>
-          Refresh This Playlist
-        </li> : null;
-    var menuItems = [
-      refreshCurrentItem,
-      <li onClick={() => this.props.refreshPlaylists()}>Refresh All Playlists</li>,
-      <li onClick={() => this.props.logout()}>Logout</li>
-    ];
+    var menu = null;
+    if (this.props.showMenu) {
+      var refreshCurrentItem = this.props.selectedPlaylist ?
+          <li
+            onClick={() => this.props.refreshAlbums(this.props.selectedPlaylist)}>
+            Refresh This Playlist
+          </li> : null;
+
+      menu = (
+        <button
+          onClick={() => this.setState({menuOpen: !this.state.menuOpen})}
+          className={classnames({
+            "menu": true,
+            "menu-open": this.state.menuOpen,
+          })}>
+          <i className="fa fa-bars" />
+          <ul>
+            {refreshCurrentItem}
+            <li onClick={() => this.props.refreshPlaylists()}>Refresh All Playlists</li>
+            <li onClick={() => this.props.logout()}>Logout</li>
+          </ul>
+        </button>
+      );
+    }
 
     return (
       <div className="header">
@@ -47,17 +62,7 @@ class Header extends React.Component<AllProps, State> {
         </div>
         <div className="header-right">
           <a className="about-link" href="#">About</a>
-          <button
-            onClick={() => this.setState({menuOpen: !this.state.menuOpen})}
-            className={classnames({
-              "menu": true,
-              "menu-open": this.state.menuOpen,
-            })}>
-            <i className="fa fa-bars" />
-            <ul>
-              {menuItems}
-            </ul>
-          </button>
+          {menu}
         </div>
       </div>
     );
