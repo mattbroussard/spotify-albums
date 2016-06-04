@@ -5,7 +5,7 @@ import * as _ from 'lodash';
 import {Playlist, Track} from "./store";
 
 const DEFAULT_PAGE_LIMIT = 20;
-const REDIRECT_URI = "http://localhost:8000/oauth_callback.html";
+const REDIRECT_URI = window.location.origin + "/oauth_callback.html";
 const SPOTIFY_API_PREFIX = "https://api.spotify.com";
 const CLIENT_ID = "3a0d380877cd4590ab63a7c2c1cd1faa";
 const SCOPES = [
