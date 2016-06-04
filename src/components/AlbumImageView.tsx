@@ -5,17 +5,19 @@ import * as ReactDom from "react-dom";
 
 import {Album, AlbumImage} from "../store";
 
+let density = () => window.devicePixelRatio || 1;
+
 class AlbumImageView extends React.Component<{album: Album}, {width: number}> {
   private resizeCheckInterval: any;
 
   constructor(props) {
     super(props);
-    this.state = {width: 200};
+    this.state = {width: 200 * density()};
   }
 
   componentDidMount() {
     this.resizeCheckInterval = setInterval(() => {
-      var width = $(ReactDom.findDOMNode(this)).width();
+      var width = $(ReactDom.findDOMNode(this)).width() * density();
       if (width > this.state.width) {
         this.setState({width});
       }
