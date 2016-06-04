@@ -8,6 +8,7 @@ import {connect} from "react-redux";
 import {RootState, AlbumsByPlaylist, Album, Albums, emptyRemoteData, AlbumImage} from "../store";
 import {loadAlbumsIfNeeded, dismissLoadAlbumsError} from "../actions";
 import ErrorDialog from "./ErrorDialog";
+import LoadingIndicator from "./LoadingIndicator";
 
 interface OwnProps {
   playlistId: string;
@@ -42,7 +43,7 @@ class AlbumsView extends React.Component<AllProps, {}> {
 
     var ret = [];
     if (this.props.loading) {
-      ret.push(<div>Loading albums...</div>);
+      ret.push(<LoadingIndicator />);
     }
 
     if (!this.props.invalid) {

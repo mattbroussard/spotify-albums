@@ -215,9 +215,10 @@ body, html {
 
 .albums-view {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   overflow-x: hidden;
   overflow-y: auto;
+  flex-grow: 1;
 }
 
 .square-image-container {
@@ -308,4 +309,16 @@ body, html {
 .error-dialog h1 {
   font-size: 18px;
   margin-bottom: 25px;
+}
+
+.loading-indicator {
+  text-align: center;
+  color: white;
+  height: 50px;
+  display: block;
+  flex-shrink: 0;
+  line-height: 50px;
+  font-size: 25px;
+  -webkit-user-select: none;
+  cursor: default;
 }

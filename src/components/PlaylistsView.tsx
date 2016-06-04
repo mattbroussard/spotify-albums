@@ -6,6 +6,7 @@ import {connect} from "react-redux";
 import {RootState, Playlist, Playlists} from "../store";
 import {loadPlaylistsIfNeeded, dismissLoadPlaylistsError} from "../actions";
 import ErrorDialog from "./ErrorDialog";
+import LoadingIndicator from "./LoadingIndicator";
 
 type StateProps = Playlists;
 
@@ -38,7 +39,7 @@ class PlaylistsView extends React.Component<AllProps, {}> {
 
     var ret = [];
     if (this.props.loading) {
-      ret.push(<div>Loading</div>);
+      ret.push(<LoadingIndicator />);
     }
 
     if (!this.props.invalid) {
