@@ -43,6 +43,7 @@ class AlbumImageView extends React.Component<{album: Album}, {width: number}> {
     var img = imageSrc ? <img src={imageSrc} title={album.name} /> : null;
     return (
       <div className="square-image-container">
+        <span className="dummy">&nbsp;</span>
         {img}
       </div>
     );

@@ -224,10 +224,20 @@ body, html {
 .square-image-container {
   display: block;
   width: 100%;
-  padding-top: 100%;
   background-color: #282828;
   position: relative;
   margin: 0;
+}
+
+.square-image-container .dummy {
+  display: block;
+  width: 100%;
+  padding-top: 100%;
+  margin: 0;
+  cursor: pointer;
+  -webkit-user-select: none;
+  z-index: 0;
+  font-size: 0;
 }
 
 .square-image-container img {
@@ -237,6 +247,9 @@ body, html {
   margin: 0;
   width: 100%;
   max-height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  z-index: 1;
 }
 
 .albums-view ul {
@@ -253,7 +266,6 @@ body, html {
 }
 
 .albums-view ul li {
-  width: 250px;
   padding: 0;
   margin: 20px;
   -webkit-user-select: none;
@@ -261,6 +273,9 @@ body, html {
 
   display: flex;
   flex-direction: column;
+  flex-basis: 250px;
+  flex-grow: 0;
+  flex-shrink: 1;
 }
 
 .albums-view ul li .square-image-container {
