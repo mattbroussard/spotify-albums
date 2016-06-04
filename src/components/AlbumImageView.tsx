@@ -12,7 +12,7 @@ class AlbumImageView extends React.Component<{album: Album}, {width: number}> {
 
   constructor(props) {
     super(props);
-    this.state = {width: 200 * density()};
+    this.state = {width: 250 * density()};
   }
 
   componentDidMount() {
@@ -34,8 +34,12 @@ class AlbumImageView extends React.Component<{album: Album}, {width: number}> {
     var imageSrc: string = null;
     if (album.images) {
       var cur = Infinity;
+
+      // Images are stored largest-first. So this should get the smallest image
+      // that is larger than the display width, or the largest image if all are
+      // smaller than the display width.
       _.each(album.images, (image: AlbumImage) => {
-        if (image.width >= this.state.width && image.width < cur) {
+        if (!imageSrc || image.width >= this.state.width) {
           cur = image.width;
           imageSrc = image.url;
         }

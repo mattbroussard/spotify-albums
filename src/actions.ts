@@ -1,7 +1,7 @@
 
 import * as $ from "jquery";
 
-import {Playlists, Track, Album, Artist} from "./store";
+import {Playlists, Track, Album, AlbumImage, Artist} from "./store";
 import {getPlaylists, getTracksForPlaylist} from "./spotify";
 import {clearPersistentData} from "./persist";
 
@@ -106,6 +106,12 @@ function loadAlbums(playlistId: string) {
           if (artist) {
             album.artist = <Artist> artist;
           }
+
+          // Spotify docs say album images are listed largest first, but
+          // let's enforce that since AlbumImageView depends on this fact.
+          album.images.sort((a: AlbumImage, b: AlbumImage) => {
+            return (b.width || 0) - (a.width || 0);
+          });
 
           albums[album.id] = album;
         }
