@@ -29,7 +29,7 @@ class AlbumsView extends React.Component<AllProps, {}> {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.props.loadAlbumsIfNeeded(nextProps.playlistId || this.props.playlistId);
+    this.props.loadAlbumsIfNeeded(nextProps.playlistId);
   }
 
   render() {
