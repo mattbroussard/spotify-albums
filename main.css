@@ -180,6 +180,10 @@ body, html {
   overflow-y: auto;
   order: 1;
   width: 100%;
+  flex-grow: 1;
+
+  /* needed for scrolling in FF? ugh. */
+  height: 0;
 }
 
 .playlists-view ul {
@@ -219,6 +223,16 @@ body, html {
   overflow-x: hidden;
   overflow-y: auto;
   flex-grow: 1;
+
+}
+
+/* needed for scrolling in FF, breaks scrolling in Chrome. ugh. */
+/* TODO: get rid of this awful hack */
+@-moz-document url-prefix() {
+  .albums-view {
+    height: 0;
+    min-height: 100%;
+  }
 }
 
 .square-image-container {
