@@ -36,5 +36,6 @@ module.exports = {
     "redux": "Redux",
     "redux-thunk": "ReduxThunk",
     "react-redux": "ReactRedux",
+    "classnames": "classNames",
   },
 };
