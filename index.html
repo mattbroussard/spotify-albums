@@ -7,12 +7,21 @@
     <link rel="stylesheet" type="text/css" href="main.css" />
   </head>
   <body>
-    <div id="app-root"></div>
+    <div id="app-root">
+      <!-- React will replace this once it loads. -->
+      <div class="loading-indicator">
+        <i class="fa fa-cog fa-spin"></i>
+      </div>
+    </div>
 
     <!-- Dependencies -->
-    <script src="./node_modules/react/dist/react.js"></script>
-    <script src="./node_modules/react-dom/dist/react-dom.js"></script>
-    <!-- TODO: get webpack to stop bundling jQuery -->
+    <script src="https://fb.me/react-15.0.2.min.js"></script>
+    <script src="https://fb.me/react-dom-15.0.2.min.js"></script>
+    <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/redux/3.5.2/redux.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/redux-thunk/2.0.1/redux-thunk.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-redux/4.4.5/react-redux.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.11.2/lodash.min.js"></script>
 
     <!-- Main -->
     <script src="./dist/bundle.js"></script>
