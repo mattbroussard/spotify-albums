@@ -4,6 +4,7 @@ import * as _ from "lodash";
 import {RootState, RemoteData, Playlist} from "./store";
 
 const LOCALSTORAGE_KEY = "spotify-albums";
+const CURRENT_SCHEMA_VERSION = 2;
 
 export function loadPersistentData(): RootState {
   var json: any = window.localStorage.getItem(LOCALSTORAGE_KEY);
@@ -14,6 +15,14 @@ export function loadPersistentData(): RootState {
       clearPersistentData();
       json = null;
     }
+  }
+
+  if (!json || !json.__schemaVersion || json.__schemaVersion != CURRENT_SCHEMA_VERSION) {
+    json = null;
+    clearPersistentData();
+  } else {
+    // Redux doesn't need to know about this.
+    delete json['__schemaVersion'];
   }
 
   // Need to return undefined so that we don't set the state to null when
@@ -36,7 +45,8 @@ function rootStateIsClean(data: RootState): boolean {
 
 export function persistIfClean(state: RootState): void {
   if (rootStateIsClean(state)) {
-    window.localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(state));
+    var json: any = JSON.stringify(_.extend({}, state, {__schemaVersion: CURRENT_SCHEMA_VERSION}));
+    window.localStorage.setItem(LOCALSTORAGE_KEY, json);
   }
 }
 
