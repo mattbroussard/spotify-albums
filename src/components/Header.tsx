@@ -5,6 +5,8 @@ import * as classnames from "classnames";
 
 import {logout, refreshPlaylists, refreshAlbums} from "../actions";
 
+const ABOUT_LINK = "http://projects.mattb.io/albums/";
+
 interface OwnProps {
   selectedPlaylist: string;
   showMenu: boolean;
@@ -61,7 +63,10 @@ class Header extends React.Component<AllProps, State> {
           Albums Lists for Spotify
         </div>
         <div className="header-right">
-          <a className="about-link" href="#">About</a>
+          <a
+            className="about-link"
+            href={ABOUT_LINK}
+            target="_blank">About</a>
           {menu}
         </div>
       </div>
