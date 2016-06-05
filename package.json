@@ -1,8 +1,8 @@
 {
-  "name": "spotify-albums-in-playlist-view",
+  "name": "spotify-albums",
   "version": "1.0.0",
-  "description": "Spotify Albums-in-Playlist View: Making it possible to organize albums in Spotify.",
-  "main": "lib/bundle.js",
+  "description": "Album Lists for Spotify: Organize your Spotify albums using playlists",
+  "main": "dist/bundle.js",
   "author": "Matt Broussard",
   "dependencies": {
     "classnames": "^2.2.5",
